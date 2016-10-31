@@ -1,0 +1,49 @@
+import java.io.FileWriter;
+import java.util.List;
+
+import twitter4j.Status;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
+
+public class TwitterHadoopParser {
+
+	/**
+	 * @param args
+	 * @throws TwitterException 
+	 */
+	public static void main(String[] args) throws TwitterException {
+		// TODO Auto-generated method stub
+ConfigurationBuilder cf = new ConfigurationBuilder();
+cf.setDebugEnabled(true)
+                       .setOAuthConsumerKey("lBK4XM8IKcFMgU36I4ox1Biac")
+                       .setOAuthConsumerSecret("RQVunENJqfkmTKSYXZzC7mjM7asNjmcnuQegf1upPhKuDGRyF4")
+                       .setOAuthAccessToken("3056267398-H8qONqy1cyjiodw2Nb2tdSStZmeQG1BXUjoz4hq")
+                       .setOAuthAccessTokenSecret("DiIzfexOpy6ddstKyIkdhw392IDET9leIKdjl8bjU0NXx");
+
+TwitterFactory tf= new TwitterFactory(cf.build());
+twitter4j.Twitter twitter = tf.getInstance();
+try{  
+	   FileWriter fw=new FileWriter("twitterfeed",true);  
+// get username, status
+String username;
+String tfeed;
+String finalTFeed;
+List<Status> status= twitter.getHomeTimeline();
+for(Status st: status)
+{
+	username= st.getUser().getName();
+	tfeed= st.getText().trim();
+	finalTFeed= tfeed.replaceAll("\\s{2,}"," ");
+    fw.write(username);
+    fw.write("|");
+    fw.write(finalTFeed);
+    fw.write(System.getProperty("line.separator"));
+}
+fw.close();
+}
+catch(Exception e){System.out.println(e);} 
+	}
+
+}
