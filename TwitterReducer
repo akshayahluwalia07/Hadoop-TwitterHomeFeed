@@ -13,11 +13,11 @@ Reducer<Text, IntWritable, Text, IntWritable>
 	public void reduce(Text key, Iterable<IntWritable> values, Context context)
 	throws IOException, InterruptedException
 	{
-		int sum=0;
+		int aggregator=0;
 		for(IntWritable value: values)
 		{
 			
-			sum+=value.get();
+			aggregator+=value.get();
 		}
 		context.write(key,  new IntWritable(sum));
 	}
